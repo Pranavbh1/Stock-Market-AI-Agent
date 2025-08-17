@@ -7,36 +7,34 @@
 ## 📸 Screenshots
 
 ### 1. Dashboard (Portfolio Overview)
-![Dashboard](./screenshots/1.png)
+![Dashboard](https://github.com/Pranavbh1/Stock-Market-AI-Agent/blob/main/screenshots/1.png?raw=true)
 
 ### 2. Your Current Holdings
-![Dashboard](./screenshots/2.png)
+![Your Holdings](https://github.com/Pranavbh1/Stock-Market-AI-Agent/blob/main/screenshots/2.png?raw=true)
 
 ### 3. Add Transaction
-![Add Transaction in Portfolio](./screenshots/3.png)
+![Add Transaction](https://github.com/Pranavbh1/Stock-Market-AI-Agent/blob/main/screenshots/3.png?raw=true)
 
 ### 4. Stock Details Page
-![Stock Details](./screenshots/4.png)
+![Stock Details](https://github.com/Pranavbh1/Stock-Market-AI-Agent/blob/main/screenshots/4.png?raw=true)
 
 ### 5. Market Movers (Top Gainers & Losers)
-![Market Movers](./screenshots/5.png)
-
+![Market Movers](https://github.com/Pranavbh1/Stock-Market-AI-Agent/blob/main/screenshots/5.png?raw=true)
 
 ### 7. Market Movers (Top Gainers & Losers)
-![Market Movers](./screenshots/7.png)
+![Market Movers](https://github.com/Pranavbh1/Stock-Market-AI-Agent/blob/main/screenshots/7.png?raw=true)
 
 ### 8. AI Assistant
-![AI Assistant](./screenshots/8.png)
+![AI Assistant](https://github.com/Pranavbh1/Stock-Market-AI-Agent/blob/main/screenshots/8.png?raw=true)
 
 ### 9. AI Assistant
-![AI Assistant](./screenshots/9.png)
+![AI Assistant](https://github.com/Pranavbh1/Stock-Market-AI-Agent/blob/main/screenshots/9.png?raw=true)
 
 ### 10. AI Assistant
-![AI Assistant](./screenshots/10.png)
+![AI Assistant](https://github.com/Pranavbh1/Stock-Market-AI-Agent/blob/main/screenshots/10.png?raw=true)
 
 ### 11. AI Assistant
-![AI Assistant](./screenshots/11.png)
-
+![AI Assistant](https://github.com/Pranavbh1/Stock-Market-AI-Agent/blob/main/screenshots/11.png?raw=true)
 
 
 ---
