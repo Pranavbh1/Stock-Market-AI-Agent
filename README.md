@@ -3,8 +3,6 @@
 
 **A powerful, AI-driven stock market portfolio management system with conversational insights**
 
-[Demo](#demo) • [Features](#features) • [Installation](#installation) • [API Docs](#api-documentation) • [Contributing](#contributing)
-
 
 
 ---
