@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Market AI Agent</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .tab:hover {
+            background: #e9ecef;
+            color: #495057;
+        }
+        
+        .tab.active {
+            background: #007bff;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+        }
+        
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
+        }
+        
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+        }
+        
+        .error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .success {
+            border-left-color: #28a745;
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .portfolio-item {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .portfolio-item h4 {
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        
+        .portfolio-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .stat {
+            text-align: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        
+        .positive {
+            color: #28a745 !important;
+        }
+        
+        .negative {
+            color: #dc3545 !important;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+        }
+        
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .chat-history {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .chat-message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        .user-message {
+            background: #007bff;
+            color: white;
+            text-align: right;
+            margin-left: 20%;
+        }
+        
+        .ai-message {
+            background: white;
+            border: 1px solid #dee2e6;
+            margin-right: 20%;
+        }
+        
+        .chat-input-area {
+            position: relative;
+        }
+        
+        .chat-input {
+            padding-right: 60px;
+        }
+        
+        .send-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #007bff;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .row {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .chat-message {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Stock Market AI Agent</h1>
+            <p>Manage your portfolio with AI-powered insights</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('portfolio')">📊 Portfolio</button>
+            <button class="tab" onclick="showTab('transaction')">💰 Add Transaction</button>
+            <button class="tab" onclick="showTab('stock')">📈 Stock Data</button>
+            <button class="tab" onclick="showTab('market')">🎯 Market Movers</button>
+            <button class="tab" onclick="showTab('ai')">🤖 AI Assistant</button>
+        </div>
+        
+        <!-- Portfolio Tab -->
+        <div id="portfolio" class="tab-content active">
+            <h2>Your Portfolio</h2>
+            <button class="btn" onclick="loadPortfolio()">🔄 Refresh Portfolio</button>
+            <div id="portfolioResult"></div>
+        </div>
+        
+        <!-- Transaction Tab -->
+        <div id="transaction" class="tab-content">
+            <h2>Add New Transaction</h2>
+            <div class="row">
+                <div>
+                    <div class="form-group">
+                        <label for="stockSymbol">Stock Symbol</label>
+                        <input type="text" id="stockSymbol" placeholder="e.g., RELIANCE, TCS" style="text-transform: uppercase;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="transactionType">Transaction Type</label>
+                        <select id="transactionType">
+                            <option value="buy">Buy</option>
+                            <option value="sell">Sell</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <label for="price">Price per Share (₹)</label>
+                        <input type="number" id="price" step="0.01" placeholder="0.00">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" placeholder="0">
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn btn-success" onclick="addTransaction()">💾 Add Transaction</button>
+            <div id="transactionResult"></div>
+        </div>
+        
+        <!-- Stock Data Tab -->
+        <div id="stock" class="tab-content">
+            <h2>Get Stock Information</h2>
+            <div class="row">
+                <div>
+                    <div class="form-group">
+                        <label for="stockLookup">Stock Symbol</label>
+                        <input type="text" id="stockLookup" placeholder="e.g., RELIANCE, TCS" style="text-transform: uppercase;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="exchange">Exchange</label>
+                        <select id="exchange">
+                            <option value="NSE">NSE</option>
+                            <option value="BSE">BSE</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-info" onclick="getStock()">🔍 Get Stock Data</button>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <label for="indexName">Index Data</label>
+                        <select id="indexName">
+                            <option value="NIFTY">NIFTY</option>
+                            <option value="SENSEX">SENSEX</option>
+                            <option value="NASDAQ">NASDAQ</option>
+                            <option value="SP500">S&P 500</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-info" onclick="getIndex()">📊 Get Index Data</button>
+                </div>
+            </div>
+            <div id="stockResult"></div>
+        </div>
+        
+        <!-- Market Tab -->
+        <div id="market" class="tab-content">
+            <h2>Market Movers</h2>
+            <button class="btn btn-success" onclick="getMarketMovers()">📈 Get Top Gainers & Losers</button>
+            <div id="marketResult"></div>
+        </div>
+        
+        <!-- AI Tab -->
+        <div id="ai" class="tab-content">
+            <h2>🤖 AI Assistant</h2>
+            <p>Your personal stock market advisor with memory of your portfolio</p>
+            
+            <!-- Chat History -->
+            <div class="chat-history" id="chatHistory">
+                <div class="chat-message ai-message">
+                    <strong>🤖 AI Assistant:</strong> Hello! I'm your personal stock market assistant. I can see your portfolio and help you make informed investment decisions. Try asking me things like:
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>"Hello" - for a personalized greeting</li>
+                        <li>"How is my portfolio doing?" - for portfolio analysis</li>
+                        <li>"What should I buy on Monday?" - for buying recommendations</li>
+                        <li>"Analyze RELIANCE" - for stock analysis</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Chat Input -->
+            <div class="form-group">
+                <label for="aiQuery">Ask me anything about stocks or your portfolio</label>
+                <div class="chat-input-area">
+                    <textarea 
+                        id="aiQuery" 
+                        rows="3" 
+                        class="chat-input"
+                        placeholder="e.g., Hello, What should I buy tomorrow?, How is my portfolio doing?, Tell me about RELIANCE..."
+                        onkeypress="handleEnterKey(event)"
+                    ></textarea>
+                    <button class="send-btn" onclick="askAI()">Send</button>
+                </div>
+            </div>
+            
+            <button class="btn btn-info" onclick="askAI()">🤖 Ask AI</button>
+            <button class="btn" onclick="clearChat()">🗑️ Clear Chat</button>
+            <div id="aiResult"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        let chatHistory = [];
+        
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Auto-load portfolio when switching to portfolio tab
+            if (tabName === 'portfolio') {
+                loadPortfolio();
+            }
+        }
+        
+        function showResult(elementId, content, isError = false) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = content;
+            element.className = `result-box ${isError ? 'error' : 'success'}`;
+        }
+        
+        function showLoading(elementId) {
+            document.getElementById(elementId).innerHTML = '<div class="loading">Loading...</div>';
+        }
+        
+        function handleEnterKey(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                askAI();
+            }
+        }
+        
+        function addToChatHistory(userMessage, aiResponse) {
+            chatHistory.push({ user: userMessage, ai: aiResponse, timestamp: new Date() });
+            updateChatDisplay();
+        }
+        
+        function updateChatDisplay() {
+            const chatHistoryDiv = document.getElementById('chatHistory');
+            
+            // Keep initial welcome message and add new messages
+            let htmlContent = `
+                <div class="chat-message ai-message">
+                    <strong>🤖 AI Assistant:</strong> Hello! I'm your personal stock market assistant. I can see your portfolio and help you make informed investment decisions. Try asking me things like:
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>"Hello" - for a personalized greeting</li>
+                        <li>"How is my portfolio doing?" - for portfolio analysis</li>
+                        <li>"What should I buy on Monday?" - for buying recommendations</li>
+                        <li>"Analyze RELIANCE" - for stock analysis</li>
+                    </ul>
+                </div>
+            `;
+            
+            // Add chat history
+            chatHistory.forEach(chat => {
+                htmlContent += `
+                    <div class="chat-message user-message">
+                        <strong>You:</strong> ${chat.user}
+                    </div>
+                    <div class="chat-message ai-message">
+                        <strong>🤖 AI Assistant:</strong>
+                        <div style="white-space: pre-wrap; line-height: 1.6; margin-top: 10px;">
+                            ${chat.ai}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            chatHistoryDiv.innerHTML = htmlContent;
+            chatHistoryDiv.scrollTop = chatHistoryDiv.scrollHeight;
+        }
+        
+        function clearChat() {
+            chatHistory = [];
+            updateChatDisplay();
+            showResult('aiResult', 'Chat history cleared!', false);
+        }
+        
+        // Updated askAI function with conversational support
+        async function askAI() {
+            const query = document.getElementById('aiQuery').value;
+            
+            if (!query.trim()) {
+                showResult('aiResult', 'Please enter a question', true);
+                return;
+            }
+            
+            showLoading('aiResult');
+            
+            try {
+                // Use the new chat endpoint for conversational AI
+                const response = await fetch(`${API_BASE}/chat/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: query
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Add to chat history
+                    addToChatHistory(query, data.response);
+                    
+                    showResult('aiResult', `
+                        <h4>✅ Message sent successfully!</h4>
+                        <p>Check the chat history above for the AI's response.</p>
+                        ${data.sources ? `<p><strong>Sources:</strong> ${data.sources.join(', ')}</p>` : ''}
+                    `);
+                    
+                    // Clear the input for next question
+                    document.getElementById('aiQuery').value = '';
+                } else {
+                    showResult('aiResult', `Error: ${data.detail}`, true);
+                }
+            } catch (error) {
+                showResult('aiResult', `Error: ${error.message}`, true);
+            }
+        }
+        
+        async function addTransaction() {
+            const symbol = document.getElementById('stockSymbol').value.toUpperCase();
+            const type = document.getElementById('transactionType').value;
+            const price = parseFloat(document.getElementById('price').value);
+            const quantity = parseInt(document.getElementById('quantity').value);
+            
+            if (!symbol || !price || !quantity) {
+                showResult('transactionResult', 'Please fill all fields', true);
+                return;
+            }
+            
+            showLoading('transactionResult');
+            
+            try {
+                const response = await fetch(`${API_BASE}/transactions/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        stock_symbol: symbol,
+                        transaction_type: type,
+                        price: price,
+                        quantity: quantity
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult('transactionResult', `
+                        <h4>✅ Transaction Added Successfully!</h4>
+                        <p><strong>ID:</strong> ${data.id}</p>
+                        <p><strong>Stock:</strong> ${data.stock_symbol}</p>
+                        <p><strong>Type:</strong> ${data.transaction_type.toUpperCase()}</p>
+                        <p><strong>Price:</strong> ₹${data.price}</p>
+                        <p><strong>Quantity:</strong> ${data.quantity}</p>
+                        <p><strong>Time:</strong> ${new Date(data.timestamp).toLocaleString()}</p>
+                    `);
+                    
+                    // Clear form
+                    document.getElementById('stockSymbol').value = '';
+                    document.getElementById('price').value = '';
+                    document.getElementById('quantity').value = '';
+                } else {
+                    showResult('transactionResult', `Error: ${data.detail}`, true);
+                }
+            } catch (error) {
+                showResult('transactionResult', `Error: ${error.message}`, true);
+            }
+        }
+        
+        async function loadPortfolio() {
+            showLoading('portfolioResult');
+            
+            try {
+                const response = await fetch(`${API_BASE}/portfolio/`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    if (data.length === 0) {
+                        showResult('portfolioResult', '<h4>📝 No Holdings Found</h4><p>Add some transactions to see your portfolio here.</p>');
+                    } else {
+                        let portfolioHtml = '<h4>📊 Your Current Holdings</h4>';
+                        let totalValue = 0;
+                        let totalInvested = 0;
+                        
+                        data.forEach(stock => {
+                            const currentValue = stock.total_quantity * stock.current_price;
+                            const investedValue = stock.total_quantity * stock.avg_buy_price;
+                            totalValue += currentValue;
+                            totalInvested += investedValue;
+                            
+                            const profitClass = stock.profit_loss >= 0 ? 'positive' : 'negative';
+                            const profitIcon = stock.profit_loss >= 0 ? '📈' : '📉';
+                            
+                            portfolioHtml += `
+                                <div class="portfolio-item">
+                                    <h4>${stock.stock_symbol} ${profitIcon}</h4>
+                                    <div class="portfolio-stats">
+                                        <div class="stat">
+                                            <div class="stat-value">${stock.total_quantity}</div>
+                                            <div class="stat-label">Quantity</div>
+                                        </div>
+                                        <div class="stat">
+                                            <div class="stat-value">₹${stock.current_price}</div>
+                                            <div class="stat-label">Current Price</div>
+                                        </div>
+                                        <div class="stat">
+                                            <div class="stat-value">₹${stock.avg_buy_price}</div>
+                                            <div class="stat-label">Avg Buy Price</div>
+                                        </div>
+                                        <div class="stat">
+                                            <div class="stat-value ${profitClass}">₹${stock.profit_loss}</div>
+                                            <div class="stat-label">P&L</div>
+                                        </div>
+                                        <div class="stat">
+                                            <div class="stat-value ${profitClass}">${stock.profit_loss_percentage}%</div>
+                                            <div class="stat-label">P&L %</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        
+                        const totalPL = totalValue - totalInvested;
+                        const totalPLPercent = totalInvested > 0 ? (totalPL / totalInvested * 100) : 0;
+                        const overallClass = totalPL >= 0 ? 'positive' : 'negative';
+                        
+                        portfolioHtml += `
+                            <div class="portfolio-item">
+                                <h4>📊 Portfolio Summary</h4>
+                                <div class="portfolio-stats">
+                                    <div class="stat">
+                                        <div class="stat-value">₹${totalValue.toFixed(2)}</div>
+                                        <div class="stat-label">Current Value</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value">₹${totalInvested.toFixed(2)}</div>
+                                        <div class="stat-label">Total Invested</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value ${overallClass}">₹${totalPL.toFixed(2)}</div>
+                                        <div class="stat-label">Overall P&L</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value ${overallClass}">${totalPLPercent.toFixed(2)}%</div>
+                                        <div class="stat-label">Overall P&L %</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        showResult('portfolioResult', portfolioHtml);
+                    }
+                } else {
+                    showResult('portfolioResult', `Error: ${data.detail}`, true);
+                }
+            } catch (error) {
+                showResult('portfolioResult', `Error: ${error.message}`, true);
+            }
+        }
+        
+        async function getStock() {
+            const symbol = document.getElementById('stockLookup').value.toUpperCase();
+            const exchange = document.getElementById('exchange').value;
+            
+            if (!symbol) {
+                showResult('stockResult', 'Please enter a stock symbol', true);
+                return;
+            }
+            
+            showLoading('stockResult');
+            
+            try {
+                const response = await fetch(`${API_BASE}/stock/${symbol}?exchange=${exchange}`);
+                const data = await response.json();
+                
+                if (response.ok && !data.error) {
+                    const changeClass = data.change >= 0 ? 'positive' : 'negative';
+                    const changeIcon = data.change >= 0 ? '📈' : '📉';
+                    
+                    showResult('stockResult', `
+                        <h4>${data.symbol} Stock Data ${changeIcon}</h4>
+                        <div class="portfolio-stats">
+                            <div class="stat">
+                                <div class="stat-value">₹${data.current_price}</div>
+                                <div class="stat-label">Current Price</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">₹${data.previous_close || 'N/A'}</div>
+                                <div class="stat-label">Previous Close</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value ${changeClass}">₹${data.change || 'N/A'}</div>
+                                <div class="stat-label">Change</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value ${changeClass}">${data.change_percent ? data.change_percent.toFixed(2) + '%' : 'N/A'}</div>
+                                <div class="stat-label">Change %</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${data.volume ? data.volume.toLocaleString() : 'N/A'}</div>
+                                <div class="stat-label">Volume</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${data.pe_ratio || 'N/A'}</div>
+                                <div class="stat-label">P/E Ratio</div>
+                            </div>
+                        </div>
+                    `);
+                } else {
+                    showResult('stockResult', `Error: ${data.error || data.detail}`, true);
+                }
+            } catch (error) {
+                showResult('stockResult', `Error: ${error.message}`, true);
+            }
+        }
+        
+        async function getIndex() {
+            const indexName = document.getElementById('indexName').value;
+            
+            showLoading('stockResult');
+            
+            try {
+                const response = await fetch(`${API_BASE}/index/${indexName}`);
+                const data = await response.json();
+                
+                if (response.ok && !data.error) {
+                    const changeClass = data.change >= 0 ? 'positive' : 'negative';
+                    const changeIcon = data.change >= 0 ? '📈' : '📉';
+                    
+                    showResult('stockResult', `
+                        <h4>${data.index} Index Data ${changeIcon}</h4>
+                        <div class="portfolio-stats">
+                            <div class="stat">
+                                <div class="stat-value">${data.current_value}</div>
+                                <div class="stat-label">Current Value</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${data.previous_close || 'N/A'}</div>
+                                <div class="stat-label">Previous Close</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value ${changeClass}">${data.change}</div>
+                                <div class="stat-label">Change</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${data.volume ? data.volume.toLocaleString() : 'N/A'}</div>
+                                <div class="stat-label">Volume</div>
+                            </div>
+                        </div>
+                    `);
+                } else {
+                    showResult('stockResult', `Error: ${data.error || data.detail}`, true);
+                }
+            } catch (error) {
+                showResult('stockResult', `Error: ${error.message}`, true);
+            }
+        }
+        
+        async function getMarketMovers() {
+            showLoading('marketResult');
+            
+            try {
+                const response = await fetch(`${API_BASE}/market/gainers-losers`);
+                const data = await response.json();
+                
+                if (response.ok && !data.error) {
+                    let html = '<h4>📈 Top Gainers</h4>';
+                    
+                    if (data.top_gainers && data.top_gainers.length > 0) {
+                        data.top_gainers.forEach(stock => {
+                            html += `
+                                <div class="portfolio-item">
+                                    <h4>${stock.symbol} 📈</h4>
+                                    <div class="portfolio-stats">
+                                        <div class="stat">
+                                            <div class="stat-value">₹${stock.current_price}</div>
+                                            <div class="stat-label">Price</div>
+                                        </div>
+                                        <div class="stat">
+                                            <div class="stat-value positive">+${stock.change_percent ? stock.change_percent.toFixed(2) : 'N/A'}%</div>
+                                            <div class="stat-label">Change %</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                    html += '<h4>📉 Top Losers</h4>';
+                    
+                    if (data.top_losers && data.top_losers.length > 0) {
+                        data.top_losers.forEach(stock => {
+                            html += `
+                                <div class="portfolio-item">
+                                    <h4>${stock.symbol} 📉</h4>
+                                    <div class="portfolio-stats">
+                                        <div class="stat">
+                                            <div class="stat-value">₹${stock.current_price}</div>
+                                            <div class="stat-label">Price</div>
+                                        </div>
+                                        <div class="stat">
+                                            <div class="stat-value negative">${stock.change_percent ? stock.change_percent.toFixed(2) : 'N/A'}%</div>
+                                            <div class="stat-label">Change %</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                    showResult('marketResult', html);
+                } else {
+                    showResult('marketResult', `Error: ${data.error || data.detail}`, true);
+                }
+            } catch (error) {
+                showResult('marketResult', `Error: ${error.message}`, true);
+            }
+        }
+        
+        // Load portfolio on page load
+        window.onload = function() {
+            loadPortfolio();
+        };
+    </script>
+</body>
+</html>

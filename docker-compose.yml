@@ -1,0 +1,75 @@
+# services:
+#   app:
+#     build: .
+#     ports:
+#       - "8000:8000"
+#     environment:
+#       - GEMINI_API_KEY=${GEMINI_API_KEY}
+#       - DATABASE_URL=postgresql://postgres:postgre@db:5432/stockdb  # ← changed "password" to "postgre"
+#     depends_on:
+#       - db
+#     volumes:
+#       - .:/app
+
+#   db:
+#     image: postgres:13
+#     environment:
+#       - POSTGRES_DB=stockdb
+#       - POSTGRES_USER=postgres
+#       - POSTGRES_PASSWORD=postgre  # ← already correct
+#     ports:
+#       - "5433:5432"
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+
+# volumes:
+#   postgres_data:
+
+
+
+version: '3.8'
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - DATABASE_URL=postgresql://postgres:postgre@db:5432/stockdb
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    restart: unless-stopped
+    networks:
+      - stock_network
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=stockdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgre
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - stock_network
+
+volumes:
+  postgres_data:
+
+networks:
+  stock_network:
+    driver: bridge

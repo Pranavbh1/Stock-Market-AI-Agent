@@ -1,0 +1,30 @@
+# core framework
+fastapi
+uvicorn
+
+# data validation / ORM
+pydantic
+sqlalchemy
+databases
+asyncpg
+python-multipart
+
+# LLM & vector-store toolchain
+langchain
+langchain-community
+langchain-google-genai
+faiss-cpu
+ollama
+
+# market-data utilities
+yfinance
+requests
+pandas
+numpy
+
+# misc
+python-dotenv
+google-generativeai      # ← new line
+psycopg2-binary
+
+
