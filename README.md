@@ -36,7 +36,6 @@
 ### 11. AI Assistant
 ![AI Assistant](https://github.com/Pranavbh1/Stock-Market-AI-Agent/blob/main/screenshots/11.png?raw=true)
 
-
 ---
 
 ## 📋 Table of Contents
