@@ -2,6 +2,40 @@
 # 🚀 Stock Market AI Agent
 
 **A powerful, AI-driven stock market portfolio management system with conversational insights**
+---
+
+## 📸 Screenshots
+
+### 1. Dashboard (Portfolio Overview)
+![Dashboard](./screenshots/1.png)
+
+### 2. Your Current Holdings
+![Dashboard](./screenshots/2.png)
+
+### 3. Add Transaction
+![Add Transaction in Portfolio](./screenshots/3.png)
+
+### 4. Stock Details Page
+![Stock Details](./screenshots/4.png)
+
+### 5. Market Movers (Top Gainers & Losers)
+![Market Movers](./screenshots/5.png)
+
+
+### 7. Market Movers (Top Gainers & Losers)
+![Market Movers](./screenshots/7.png)
+
+### 8. AI Assistant
+![AI Assistant](./screenshots/8.png)
+
+### 9. AI Assistant
+![AI Assistant](./screenshots/9.png)
+
+### 10. AI Assistant
+![AI Assistant](./screenshots/10.png)
+
+### 11. AI Assistant
+![AI Assistant](./screenshots/11.png)
 
 
 
