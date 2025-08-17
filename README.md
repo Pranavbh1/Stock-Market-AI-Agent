@@ -1,15 +1,6 @@
 ```markdown
 # 🚀 Stock Market AI Agent
 
-
-
-![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-13+-blue.svg)
-![Docker](https://img.shields.io/badge/Docker-Compose-blue.svg)
-![AI](https://img.shields.io/badge/AI-Google%20Gemini-orange.svg)
-![License](https://img.shields.io/badge/License-MIT-yellow.svg)
-
 **A powerful, AI-driven stock market portfolio management system with conversational insights**
 
 [Demo](#demo) • [Features](#features) • [Installation](#installation) • [API Docs](#api-documentation) • [Contributing](#contributing)
@@ -518,19 +509,3 @@ Made with ❤️ and ☕ by developers who love the stock market
 [🔝 Back to Top](#-stock-market-ai-agent)
 
 
-
----
-
-> **Disclaimer**: This application is for educational purposes only. The AI provides educational insights and should not be considered as financial advice. Always consult with qualified financial professionals before making investment decisions. Past performance does not guarantee future results.
-
-> **Risk Warning**: Trading and investing in stocks involves substantial risk of loss and is not suitable for all investors. Please ensure you fully understand the risks involved.
-```
-
-[1] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/90290259/5156f6d3-a76e-4e25-a602-a0a68e5f019c/docker-compose.yml
-[2] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/90290259/796139ce-45a4-4c44-8d31-68809fee24a6/database.py
-[3] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/90290259/3c5ad851-3b2b-455c-ad4b-a965f77e8d1a/schemas.py
-[4] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/90290259/1d0a1be5-4ed6-484b-949a-fe2109113a38/market_data.py
-[5] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/90290259/b86e731e-934a-4f8d-a444-a1ad6d236769/portfolio.py
-[6] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/90290259/54e6d981-a90f-4baf-bcea-dc4e86ea149d/index.html
-[7] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/90290259/674973ca-3af5-4229-b828-1228baa0f11b/ai_agent.py
-[8] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/90290259/a90c1af3-ed63-405b-93ff-ead1d748b159/main.py
